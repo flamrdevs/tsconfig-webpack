@@ -1,3 +1,8 @@
+/**
+ * tsconfig-webpack
+ * convert tsconfig/compilerOptions/paths to webpack.config/module/alias 
+ */
+
 const path = require('path');
 
 const tsConfigWebpack = ({ tsConfigPath = './tsconfig.json', webpackConfigBasePath = __dirname } = {}) => {
