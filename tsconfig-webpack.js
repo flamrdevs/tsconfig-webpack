@@ -5,20 +5,26 @@
 
 const path = require('path');
 
-const tsConfigWebpack = ({ tsConfigPath = './tsconfig.json', webpackConfigBasePath = __dirname } = {}) => {
+const tsconfig = require('./tsconfig.json');
+
+const alias = () => {
   // get paths from destructuring tsconfig.json
-  const { paths } = require(tsConfigPath).compilerOptions;
+  const { paths } = tsconfig.compilerOptions
 
   // ts alias (paths)
   const ts_alias = {};
 
   for (const [_alias,_path] of Object.entries(paths)) {
     // ts_alias[new_alias] = new_path
-    ts_alias[_alias.replace('/*','')] = path.resolve(webpackConfigBasePath,_path[0].replace('/*','').replace('*',''));
+    ts_alias[_alias.replace('/*','')] = [..._path.map(__path => path.resolve(__dirname,__path.replace('/*','').replace('*','')))];
   }
 
   // return ts alias to webpack alias
   return ts_alias;
+}
+
+const tsConfigWebpack = {
+  alias: alias
 }
 
 module.exports = tsConfigWebpack;
